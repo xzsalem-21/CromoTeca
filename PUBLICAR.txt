@@ -1,0 +1,60 @@
+CROMOTECA MOVIL - COMO PUBLICARLA GRATIS (https) Y INSTALARLA EN ANDROID
+=======================================================================
+
+Esta carpeta ("movil") es la app completa para el telefono. No necesita el PC
+ni ningun servidor: tras instalarla, el catalogo, tu coleccion y tus fotos viven
+en el propio movil y funciona sin conexion.
+
+Para que Android permita instalarla, la pagina debe servirse por https. La forma
+gratuita mas sencilla es GitHub Pages. En el sitio solo estaran el codigo de la
+app y el catalogo publico: tus fotos y tu coleccion NUNCA salen del movil.
+
+PASO A PASO (desde el PC, en el navegador)
+------------------------------------------
+1. Entra en https://github.com y crea una cuenta gratuita (o inicia sesion).
+2. Arriba a la derecha: "+" > "New repository".
+   - Repository name: cromoteca
+   - Marca "Public" (las paginas gratuitas lo exigen).
+   - Pulsa "Create repository".
+3. En la pagina del repositorio nuevo pulsa "uploading an existing file".
+4. Abre esta carpeta ("movil") y selecciona TODO SU CONTENIDO (no la carpeta en si):
+   index.html, app.js, store.js, sw.js, app.css, app.webmanifest, iconos .png/.svg,
+   .nojekyll (si no la ves, activa "elementos ocultos"), las carpetas "data" y "vendor",
+   y los textos ATRIBUCION.txt y PUBLICAR.txt (opcional).
+   Arrastralo todo a la ventana de GitHub, espera a que termine de subir y pulsa
+   "Commit changes".
+5. En el repositorio: "Settings" > "Pages". En "Build and deployment":
+   Source = "Deploy from a branch", Branch = "main" y carpeta "/ (root)". Pulsa Save.
+6. Espera 1-2 minutos y recarga esa pagina: arriba aparecera la direccion, con la forma
+        https://TU-USUARIO.github.io/cromoteca/
+
+INSTALARLA EN ANDROID
+---------------------
+1. En el movil, abre esa direccion con Chrome. La primera vez descarga el catalogo
+   (1 MB) y lo guarda en el movil.
+2. Aparecera un aviso "Instalar Cromoteca" en la pantalla de inicio de la app
+   (o menu de Chrome > "Instalar aplicacion").
+3. A partir de ahi se abre desde su icono, a pantalla completa y sin conexion.
+
+COPIAS DE SEGURIDAD (importante)
+--------------------------------
+Los datos estan solo en el movil. Si cambias de movil o borras los datos de Chrome,
+se pierden. En Ajustes > Copia de seguridad puedes descargar un archivo y restaurarlo
+despues en cualquier movil con la app instalada.
+
+ACTUALIZAR LA APP O EL CATALOGO
+-------------------------------
+- Catalogo nuevo: en el PC, con la app del PC al dia, ejecuta en la carpeta del proyecto
+      node tools\exportar_catalogo.js
+  y vuelve a subir a GitHub la carpeta "data". En el movil: Ajustes > "Buscar catalogo
+  nuevo". Tus datos no se tocan.
+- Cambios en la app: sube los archivos modificados y, en sw.js, cambia el numero de la
+  linea "const VER = ..." para que los moviles descarguen la version nueva.
+
+ATRIBUCION
+----------
+Los datos del catalogo proceden de Dragon Ball Center (https://www.dragonball.center),
+licencia CC BY-NC-SA 4.0: uso no comercial, citando la fuente y compartiendo con la misma
+licencia. Las imagenes de referencia NO se copian: se cargan desde su web y pertenecen
+a sus fabricantes. Si publicas la app, conviene avisar a Dragon Ball Center por su
+formulario de contacto (https://www.dragonball.center/contacto).

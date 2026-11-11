@@ -1,0 +1,11 @@
+Cromoteca - app no oficial de uso personal.
+
+Datos del catalogo (colecciones, fabricantes, paises, anios y numeracion de cromos):
+Dragon Ball Center - https://www.dragonball.center - licencia Creative Commons
+Reconocimiento-NoComercial-CompartirIgual 4.0 (CC BY-NC-SA 4.0).
+https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+El fichero data/catalogo.json es una adaptacion de esos datos y se comparte bajo la misma licencia.
+
+Las imagenes de los cromos pertenecen a sus fabricantes y distribuidores (Bird Studio, Shueisha,
+Toei Animation, Bandai, etc.). No se incluyen en esta app: se muestran cargandolas desde
+dragonball.center. Dragon Ball es una marca de sus titulares; esta app no esta afiliada a ellos.

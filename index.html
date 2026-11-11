@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0f2c">
+<meta name="description" content="Tu colección de cromos de Dragon Ball, en tu móvil y sin conexión">
+<title>Cromoteca</title>
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="barra">
+  <a class="marca" href="#/"><span class="marca-rayo" aria-hidden="true"></span><span class="marca-txt">CROMO<b>TECA</b></span></a>
+  <nav class="nav-pc">
+    <a href="#/" data-nav="inicio">Inicio</a>
+    <a href="#/catalogo" data-nav="catalogo">Catálogo</a>
+    <a href="#/mias" data-nav="mias">Mis colecciones</a>
+    <a href="#/ajustes" data-nav="ajustes">Ajustes</a>
+    <a class="btn btn-fuego" href="#/escanear">Escanear</a>
+  </nav>
+</header>
+<main id="vista" tabindex="-1"></main>
+<footer class="copy-app">2026 © Xavier Z.P · CromoTeca v1.0</footer>
+<nav class="nav-movil" aria-label="Principal">
+  <a href="#/" data-nav="inicio"><i class="ic ic-casa"></i>Inicio</a>
+  <a href="#/catalogo" data-nav="catalogo"><i class="ic ic-lupa"></i>Catálogo</a>
+  <a href="#/escanear" class="nav-scan" data-nav="escanear" aria-label="Escanear cromo"><i class="ic ic-camara"></i></a>
+  <a href="#/mias" data-nav="mias"><i class="ic ic-album"></i>Mías</a>
+  <a href="#/ajustes" data-nav="ajustes"><i class="ic ic-tuerca"></i>Ajustes</a>
+</nav>
+<div id="hoja" class="hoja" hidden></div>
+<div id="aviso" class="aviso" role="status" hidden></div>
+<script src="store.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
