@@ -1,6 +1,6 @@
 /* Cromoteca — service worker: la app funciona sin conexión y sirve tus fotos guardadas en el móvil */
-const VER = 'cromoteca-v1.0.1';
-const CORE = ['./', 'index.html', 'app.css', 'app.js', 'store.js', 'app.webmanifest', 'icono.svg', 'icon-192.png', 'icon-512.png',
+const VER = 'cromoteca-v1.0.3';
+const CORE = ['./', 'index.html', 'app.css', 'app.js', 'store.js', 'app.webmanifest', 'icono.svg', 'icon-192.png', 'icon-512.png', 'fondo.jpg',
   'vendor/tesseract.min.js', 'vendor/worker.min.js', 'vendor/tesseract-core-simd-lstm.wasm.js', 'vendor/lang/eng.traineddata.gz'];
 
 self.addEventListener('install', e => {

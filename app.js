@@ -127,7 +127,7 @@ async function vCatalogo(soloMias) {
 
 function hojaNuevaColeccion(alCrear, titulo = '') {
   abrirHoja(`<div class="hoja-cab"><h3>Nueva colección</h3><button class="cerrar" data-cerrar aria-label="Cerrar">×</button></div>
-    <p class="sub">Para colecciones que no están en el catálogo. Se guarda solo en tu PC.</p>
+    <p class="sub">Para colecciones que no están en el catálogo. Se guarda solo en este móvil.</p>
     <label for="nt">Título</label><input id="nt" value="${esc(titulo)}" placeholder="Ej.: Dragon Ball Z Serie Oro">
     <div class="fila" style="margin-top:10px"><div><label for="nf">Fabricante</label><input id="nf"></div><div><label for="na">Año</label><input id="na" inputmode="numeric"></div>
     <div><label for="nn">Nº de cromos</label><input id="nn" inputmode="numeric" placeholder="Ej.: 240"></div></div>
