@@ -9,3 +9,8 @@ El fichero data/catalogo.json es una adaptacion de esos datos y se comparte bajo
 Las imagenes de los cromos pertenecen a sus fabricantes y distribuidores (Bird Studio, Shueisha,
 Toei Animation, Bandai, etc.). No se incluyen en esta app: se muestran cargandolas desde
 dragonball.center. Dragon Ball es una marca de sus titulares; esta app no esta afiliada a ellos.
+
+Origen de la informacion del catalogo: segun explica Dragon Ball Center, se elabora con datos facilitados
+por fabricantes y coleccionistas y con informacion de otras publicaciones, digitales o impresas, procurando
+respetar los derechos de autor. Si detectas algun contenido que vulnere tus derechos, avisa en
+https://github.com/xzsalem-21/CromoTeca para anadir la mencion correspondiente o retirarlo.

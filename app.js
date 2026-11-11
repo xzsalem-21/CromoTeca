@@ -81,7 +81,7 @@ function pintarImport(im, s) {
     $('#bImp').onclick = async () => { const e = await api('importar', { body: {} }); pintarImport({ ...e, activo: true }, s); };
   } else c.innerHTML = '';
 }
-const pie = () => `<p class="pie">Datos del catálogo: <a href="${DBC}/catalogo" target="_blank" rel="noopener">Dragon Ball Center</a>, licencia CC BY-NC-SA 4.0. Las imágenes de referencia se cargan desde su web y pertenecen a sus fabricantes. App de uso personal, no oficial.</p>`;
+const pie = () => `<p class="pie">Los datos del catálogo proceden de <a href="${DBC}/catalogo" target="_blank" rel="noopener">Dragon Ball Center</a> y se comparten con licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Creative Commons BY-NC-SA 4.0</a>: uso no comercial, citando la fuente y manteniendo la misma licencia. Esa información se ha reunido a partir de lo que facilitan los fabricantes, lo que aportan los coleccionistas y lo que aparece en otras publicaciones, digitales o impresas, procurando respetar la propiedad intelectual de cada autor. Las imágenes de referencia se cargan desde su web y pertenecen a sus titulares. App personal, gratuita y no oficial. Si algo vulnera tus derechos, avísame en <a href="https://github.com/xzsalem-21/CromoTeca" target="_blank" rel="noopener">github.com/xzsalem-21/CromoTeca</a> y añadiré la mención que corresponda o lo retiraré.</p>`;
 
 /* ---------- CATÁLOGO ---------- */
 const filtro = { q: '', pais: '', cat: '', fab: '', lic: '', orden: 'anio' };
