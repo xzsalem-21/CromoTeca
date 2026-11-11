@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#0a0f2c"/>
-<g transform="translate(256 256)"><g fill="#ff7a00"><path d="M0-230 28-90-28-90z"/><path d="M0-230 28-90-28-90z" transform="rotate(45)"/><path d="M0-230 28-90-28-90z" transform="rotate(90)"/><path d="M0-230 28-90-28-90z" transform="rotate(135)"/><path d="M0-230 28-90-28-90z" transform="rotate(180)"/><path d="M0-230 28-90-28-90z" transform="rotate(225)"/><path d="M0-230 28-90-28-90z" transform="rotate(270)"/><path d="M0-230 28-90-28-90z" transform="rotate(315)"/></g>
-<rect x="-92" y="-128" width="184" height="256" rx="20" fill="#ffd400" stroke="#0a0f2c" stroke-width="16" transform="rotate(-8)"/>
-<path d="M22-84-48 14h40l-16 72 72-104H8z" fill="#1e5bff" stroke="#0a0f2c" stroke-width="10" stroke-linejoin="round" transform="rotate(-8)"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs>
+<linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3a0"/><stop offset=".45" stop-color="#ffd400"/><stop offset="1" stop-color="#ff8a00"/></linearGradient>
+<radialGradient id="r" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff7a00" stop-opacity=".55"/><stop offset="1" stop-color="#ff7a00" stop-opacity="0"/></radialGradient></defs>
+<rect width="512" height="512" rx="112" fill="#050507"/><circle cx="256" cy="256" r="240" fill="url(#r)"/>
+<g transform="translate(129.2,51.2) scale(4.876)" stroke-linejoin="round"><polygon points="26,0 0,44 20,44 11,84 52,32 31,32 44,0" fill="url(#g)" stroke="#ff7a00" stroke-width="2.2"/></g></svg>
