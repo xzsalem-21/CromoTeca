@@ -249,6 +249,18 @@ async function api(ruta, opc = {}) {
     uso[id] = ahora(); await mSet('uso', uso);
     return { marcados: filas.length };
   }
+  if ((m = /^colecciones\/(\d+)\/desmarcar$/.exec(r0)) && met === 'POST') {
+    const id = +m[1], todo = b.modo === 'todo', filas = [];
+    for (const k of await cromosDe(id)) {
+      const f0 = mis.get(k.id); if (k.tipo !== 'cromo' || !f0 || !(f0.cantidad > 0)) continue;
+      if (!todo && (f0.foto_anverso || f0.thumb)) continue;
+      const f = { ...f0 };
+      if (todo) { await borrarFoto(f.foto_anverso); await borrarFoto(f.foto_reverso); await borrarFoto(f.thumb); f.foto_anverso = f.foto_reverso = f.thumb = f.hash = ''; }
+      f.cantidad = 0; f.actualizado = ahora(); filas.push(f);
+    }
+    if (filas.length) await guardarMis(filas);
+    return { desmarcados: filas.length };
+  }
   if (met === 'POST' && r0 === 'parecidos') {
     const cand = [...mis.values()].filter(x => x.hash && (!b.coleccion_id || x.col === +b.coleccion_id)).map(x => ({ x, dist: hamming(x.hash, b.hash) })).filter(y => y.dist <= 70).sort((a, c) => a.dist - c.dist).slice(0, 5);
     const lista = [];

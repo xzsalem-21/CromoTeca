@@ -161,7 +161,7 @@ async function vColeccion(id, refrescar) {
       <a class="btn btn-fuego" href="#/escanear/${c.id}">Escanear aquí</a>
       <button class="btn" id="bListas">Faltas y repes</button>
       ${c.total && c.tengo < c.total ? '<button class="btn btn-cielo" id="bTodos">Los tengo todos</button>' : ''}
-      ${c.dbc_id ? `<a class="btn btn-liso" target="_blank" rel="noopener" href="${DBC}/catalogo/coleccion/${c.dbc_id}/${esc(c.slug || '')}">Ficha en DBC ↗</a>` : ''}
+      ${c.tengo > 0 ? '<button class="btn btn-liso" id="bDesm">Desmarcar colección</button>' : ''}
     </div>
     ${c.descripcion ? `<details class="caja" style="margin-top:14px"><summary style="cursor:pointer;font-weight:700">Sobre esta colección</summary><p style="white-space:pre-line">${esc(c.descripcion)}</p></details>` : ''}
     <div class="chips" id="chips">${[['todos', 'Todos'], ['tengo', 'Tengo'], ['faltan', 'Me faltan'], ['repes', 'Repetidos']].map(([k, t]) => `<button class="chip ${verFiltro === k ? 'activo' : ''}" data-f="${k}">${t}</button>`).join('')}</div>
@@ -177,6 +177,25 @@ async function vColeccion(id, refrescar) {
     $('#siTodos').onclick = async () => {
       try { const r = await api(`colecciones/${id}/completa`, { body: {} }); cerrarHoja(); await vColeccion(id); aviso(`¡Colección completa! ${r.marcados} cromos marcados`); }
       catch (e) { aviso(e.message); }
+    };
+  };
+  if ($('#bDesm')) $('#bDesm').onclick = () => {
+    const marc = d.cromos.filter(k => k.tipo === 'cromo' && k.cantidad > 0), sinF = marc.filter(k => !k.thumb).length, conF = marc.length - sinF;
+    const fin = async (modo) => {
+      try { const r = await api(`colecciones/${id}/desmarcar`, { body: { modo } }); cerrarHoja(); await vColeccion(id); aviso(`${r.desmarcados} cromos desmarcados`); }
+      catch (e) { aviso(e.message); }
+    };
+    abrirHoja(`<div class="hoja-cab"><h3>Desmarcar colección</h3><button class="cerrar" data-cerrar aria-label="Cerrar">×</button></div>
+      <p>Elige qué quitar de <b>${esc(c.titulo)}</b>:</p>
+      <div class="fila-btn"><button class="btn btn-cielo" id="dSolo" ${sinF ? '' : 'disabled'}>Solo los marcados sin foto (${sinF})</button></div>
+      <p class="sub">Es la forma de deshacer «Los tengo todos». Los cromos con tus fotos se quedan como están${conF ? ` (${conF})` : ''}.</p>
+      <div class="fila-btn"><button class="btn" id="dTodo">Todos, también fotos y repetidos (${marc.length})</button><button class="btn btn-liso" data-cerrar>Cancelar</button></div>`);
+    $('#dSolo').onclick = () => fin('sin_fotos');
+    $('#dTodo').onclick = () => {
+      abrirHoja(`<div class="hoja-cab"><h3>¿Seguro?</h3><button class="cerrar" data-cerrar aria-label="Cerrar">×</button></div>
+        <p>Se desmarcarán los <b>${marc.length}</b> cromos de <b>${esc(c.titulo)}</b> y <b>se borrarán tus fotos y repetidos</b>. No se puede deshacer.</p>
+        <div class="fila-btn"><button class="btn btn-fuego" id="dSi">Sí, desmarcar todo</button><button class="btn btn-liso" data-cerrar>Cancelar</button></div>`);
+      $('#dSi').onclick = () => fin('todo');
     };
   };
   $('#album').onclick = e => { const b = e.target.closest('[data-id]'); if (b) hojaCromo(+b.dataset.id); };
@@ -418,11 +437,27 @@ function decidir(texto) {
     v.innerHTML = `<div class="veredicto v-duda"><h2>No está en la lista</h2><p>El «${esc(texto.trim())}» no figura en el catálogo de esta colección. Revisa el número o añádelo como cromo nuevo.</p>
       <div class="fila-btn"><button class="btn btn-fuego" id="crear">Añadirlo y guardar</button></div></div>`;
     v.onclick = null;
-    $('#crear').onclick = async () => {
-      try { const r = await api(`colecciones/${scan.col.id}/cromos`, { body: { numero: texto.trim() } }); const k = { id: r.id, etiqueta: 'Cromo ' + texto.trim(), numero: texto.trim(), cantidad: 0, tipo: 'cromo' }; scan.cromos.push(k); guardar(k, false); }
+    $('#crear').onclick = () => confirmar({ etiqueta: 'Cromo ' + texto.trim() }, async () => {
+      try { const r = await api(`colecciones/${scan.col.id}/cromos`, { body: { numero: texto.trim() } }); const k = { id: r.id, etiqueta: 'Cromo ' + texto.trim(), numero: texto.trim(), cantidad: 0, tipo: 'cromo', creado: true }; scan.cromos.push(k); guardar(k, false); }
       catch (e) { aviso(e.message); }
-    };
+    }, () => decidir(texto));
   }
+  v.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function confirmar(k, ok, no) {
+  const v = $('#veredicto'); v.onclick = null;
+  const mia = escalar(scan.a.cv, 360).toDataURL('image/jpeg', .8);
+  const ref = (conf.refs && k.ref_thumb) ? imgRef(k.ref_thumb, '') : '';
+  const msg = ref ? '¿Es el mismo cromo? Compara el dibujo, los colores y el título.'
+    : conf.refs ? 'Este cromo no tiene imagen de referencia. Comprueba que el título y el número de tu foto son de esta colección.'
+    : 'Las imágenes de referencia están ocultas. Actívalas en Ajustes para comparar, o comprueba tú que es de esta colección.';
+  v.innerHTML = `<div class="veredicto v-duda"><h2>Comprueba antes de guardar</h2>
+    <p>Lo vas a guardar como <b>${esc(k.etiqueta)}</b> de la colección <b>${esc(scan.col.titulo)}</b>.</p>
+    <div class="fotos2"><figure><img src="${mia}" alt="Tu foto"><figcaption>Tu foto</figcaption></figure>
+      <figure>${ref || '<div class="hueco">Sin referencia</div>'}<figcaption>Catálogo</figcaption></figure></div>
+    <p>${msg}</p>
+    <div class="fila-btn"><button class="btn btn-fuego" id="cOk">Sí, es este</button><button class="btn" id="cNo">No, cancelar</button></div></div>`;
+  $('#cOk').onclick = ok; $('#cNo').onclick = no;
   v.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 function veredicto(k) {
@@ -431,15 +466,16 @@ function veredicto(k) {
     v.innerHTML = `<div class="veredicto v-tengo"><h2>¡Ya lo tienes!</h2>${k.thumb ? `<img class="mini" src="fotos/${esc(k.thumb)}" alt="Tu foto guardada">` : ''}
       <p>${esc(k.etiqueta)} ya está en tu álbum (${k.cantidad} ${k.cantidad === 1 ? 'copia' : 'copias'}).</p>
       <div class="fila-btn"><button class="btn btn-cielo" id="vRepe">Guardar como repetido (+1)</button>${k.thumb ? '<button class="btn" id="vSust">Cambiar las fotos</button>' : '<button class="btn" id="vSust">Guardar estas fotos</button>'}<a class="btn btn-liso" href="#/escanear/${scan.col.id}" id="vOtro">Escanear otro</a></div></div>`;
-    $('#vRepe').onclick = () => guardar(k, true, !k.thumb);
-    $('#vSust').onclick = () => guardar(k, false);
+    $('#vRepe').onclick = () => confirmar(k, () => guardar(k, true, !k.thumb), () => veredicto(k));
+    $('#vSust').onclick = () => confirmar(k, () => guardar(k, false), () => veredicto(k));
     $('#vOtro').onclick = e => { e.preventDefault(); vCapturar(scan.col.id); };
   } else {
     v.innerHTML = `<div class="veredicto v-nuevo"><h2>¡Nuevo!</h2><p>${esc(k.etiqueta)} no estaba en tu álbum.</p><div class="fila-btn"><button class="btn btn-fuego btn-gigante" id="vGuardar" style="max-width:420px">Guardarlo en el álbum</button></div></div>`;
-    $('#vGuardar').onclick = () => guardar(k, false);
+    $('#vGuardar').onclick = () => confirmar(k, () => guardar(k, false), () => veredicto(k));
   }
 }
 async function guardar(k, sumar, conFotos = true) {
+  const antes = k.cantidad || 0, fotosNuevas = (conFotos || !sumar) && !k.thumb;
   try {
     vista.insertAdjacentHTML('beforeend', '<div class="cargando" id="guardando">Guardando</div>');
     const cuerpo = { sumar };
@@ -453,8 +489,12 @@ async function guardar(k, sumar, conFotos = true) {
     const total = scan.cromos.filter(x => x.tipo === 'cromo').length, tengo = scan.cromos.filter(x => x.tipo === 'cromo' && (x.id === k.id || x.cantidad > 0)).length;
     vista.innerHTML = `<div class="veredicto v-nuevo" style="margin-top:20px"><h2>¡Guardado!</h2><img class="mini" src="fotos/${esc(r.cromo.thumb)}" alt="">
       <p>${esc(r.cromo.etiqueta)} · ${esc(scan.col.titulo)}<br>${r.cromo.cantidad > 1 ? `Ahora tienes ${r.cromo.cantidad} copias.` : `Llevas ${tengo} de ${total} (${pct(tengo, total)}%).`}</p>
-      <div class="fila-btn"><button class="btn btn-fuego" id="otro">Escanear otro</button><a class="btn" href="#/col/${scan.col.id}">Ver el álbum</a></div></div>`;
+      <div class="fila-btn"><button class="btn btn-fuego" id="otro">Escanear otro</button><a class="btn" href="#/col/${scan.col.id}">Ver el álbum</a>${!k.creado && (antes === 0 || sumar) ? '<button class="btn btn-liso" id="cDes">Deshacer (no es este)</button>' : ''}</div></div>`;
     $('#otro').onclick = () => vCapturar(scan.col.id);
+    if ($('#cDes')) $('#cDes').onclick = async () => {
+      try { await api('cromos/' + k.id, { method: 'PATCH', body: { cantidad: antes, ...(fotosNuevas ? { quitar_fotos: true } : {}) } }); aviso('Guardado deshecho'); vCapturar(scan.col.id); }
+      catch (e) { aviso('No se pudo deshacer: ' + e.message); }
+    };
   } catch (e) { const g = $('#guardando'); if (g) g.remove(); aviso('No se pudo guardar: ' + e.message); }
 }
 

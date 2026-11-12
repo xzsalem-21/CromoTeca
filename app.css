@@ -188,3 +188,5 @@ pre.txt{white-space:pre-wrap;word-break:break-word;background:var(--tinta);borde
 
 .chapa-ok{background:var(--ok);color:var(--tinta)}
 .col:has(.chapa-ok){border-color:var(--ok)}
+
+.veredicto .fotos2 figcaption{color:#fff;font-weight:700;font-size:13px;margin-top:4px}
