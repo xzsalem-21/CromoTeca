@@ -439,7 +439,7 @@ function decidir(texto) {
     v.onclick = null;
     $('#crear').onclick = () => confirmar({ etiqueta: 'Cromo ' + texto.trim() }, async () => {
       try { const r = await api(`colecciones/${scan.col.id}/cromos`, { body: { numero: texto.trim() } }); const k = { id: r.id, etiqueta: 'Cromo ' + texto.trim(), numero: texto.trim(), cantidad: 0, tipo: 'cromo', creado: true }; scan.cromos.push(k); guardar(k, false); }
-      catch (e) { aviso(e.message); }
+      catch (e) { ['#cOk', '#cNo'].forEach(q => { const x = $(q); if (x) x.disabled = false; }); aviso(e.message); }
     }, () => decidir(texto));
   }
   v.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -457,7 +457,8 @@ function confirmar(k, ok, no) {
       <figure>${ref || '<div class="hueco">Sin referencia</div>'}<figcaption>Catálogo</figcaption></figure></div>
     <p>${msg}</p>
     <div class="fila-btn"><button class="btn btn-fuego" id="cOk">Sí, es este</button><button class="btn" id="cNo">No, cancelar</button></div></div>`;
-  $('#cOk').onclick = ok; $('#cNo').onclick = no;
+  $('#cOk').onclick = () => { $('#cOk').disabled = true; $('#cNo').disabled = true; ok(); };
+  $('#cNo').onclick = no;
   v.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 function veredicto(k) {
@@ -495,7 +496,7 @@ async function guardar(k, sumar, conFotos = true) {
       try { await api('cromos/' + k.id, { method: 'PATCH', body: { cantidad: antes, ...(fotosNuevas ? { quitar_fotos: true } : {}) } }); aviso('Guardado deshecho'); vCapturar(scan.col.id); }
       catch (e) { aviso('No se pudo deshacer: ' + e.message); }
     };
-  } catch (e) { const g = $('#guardando'); if (g) g.remove(); aviso('No se pudo guardar: ' + e.message); }
+  } catch (e) { const g = $('#guardando'); if (g) g.remove(); ['#cOk', '#cNo'].forEach(q => { const x = $(q); if (x) x.disabled = false; }); aviso('No se pudo guardar: ' + e.message); }
 }
 
 /* ---------- AJUSTES ---------- */
